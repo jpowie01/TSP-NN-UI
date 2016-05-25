@@ -8,16 +8,24 @@
 
 <body>
 	<div id="page">
-		<div id="header">
+		<header>
 			<h1>Travelling salesman problem</h1>
 			<h2>Solving TSP using neural network</h2>
-		</div>
-		<div id="canvasContainer">
-			<canvas id="canvas" width="500" height="500"></canvas>
-			<button id="calculateButton" onclick="calculate()" type="button">Calculate</button>
+		</header>
+		<div id="bodyContainer">
+			<div id="canvasContainer">
+				<canvas id="canvas" width="500" height="500"></canvas>
+			</div>
+			<div id="informationContainer">
+				<h3>Network result</h3>
+				<div id="networkResultContainer"></div>
+				<h3>Expected result</h3>
+				<div id="expectedResultContainer"></div>
+				<button id="calculateButton" onclick="calculate()" type="button">Calculate</button>
+			</div>
 		</div>
 		<footer>
-			<p> Jakub Powierza, Karolina Olszewska 2016 </p>
+			<p>&copy; 2016 Jakub Powierza, Karolina Olszewska</p>
 		</footer>
 	</div>
 	<script type="text/javascript" src="js/circles.js"></script>
