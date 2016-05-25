@@ -10,66 +10,100 @@ var startY;
 var isDown = false;
 var dragTarget;
 
-var circles = [];
-circles.push({
-    "x": 118,
-    "y": 196,
-    "r": 10,
-	"id": 1,
-    "color": {
-        "r": 255,
-        "g": 51,
-        "b": 51
-    }
-});
-circles.push({
-    "x": 247,
-    "y": 105,
-    "r": 10,
-	"id": 2,
-    "color": {
-        "r": 255,
-        "g": 153,
-        "b": 51
-    }
-});
-circles.push({
-	"x": 324,
-    "y": 352,
-    "r": 10,
-	"id": 3,
-    "color": {
-        "r": 255,
-        "g": 255,
-        "b": 51
-    }
-});
-circles.push({
-    "x": 174,
-    "y": 351,
-    "r": 10,
-	"id": 4,
-    "color": {
-        "r": 153,
-        "g": 255,
-        "b": 51
-    }
-});
-circles.push({
-    "x": 382,
-    "y": 200,
-    "r": 10,
-	"id": 5,
-    "color": {
-        "r": 51,
-        "g": 153,
-        "b": 255
-    }
-});
+var graph_net_order = [];
+var graph_expected_order = [];
+var empty = [[0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0]];
 
-graph_net_order = [];
-graph_expected_order = [];
-draw();
+var circles = [
+    {
+        "x": 118,
+        "y": 196,
+        "r": 10,
+        "id": 1,
+        "color": {
+            "r": 255,
+            "g": 51,
+            "b": 51
+        }
+    }, {
+        "x": 247,
+        "y": 105,
+        "r": 10,
+        "id": 2,
+        "color": {
+            "r": 255,
+            "g": 153,
+            "b": 51
+        }
+    }, {
+        "x": 382,
+        "y": 200,
+        "r": 10,
+        "id": 3,
+        "color": {
+            "r": 51,
+            "g": 153,
+            "b": 255
+        }
+    }, {
+        "x": 324,
+        "y": 352,
+        "r": 10,
+        "id": 4,
+        "color": {
+            "r": 255,
+            "g": 255,
+            "b": 51
+        }
+    }, {
+        "x": 174,
+        "y": 351,
+        "r": 10,
+        "id": 5,
+        "color": {
+            "r": 153,
+            "g": 255,
+            "b": 51
+        }
+    }
+];
+
+function createTableForData(container, data, order, color) {
+    var table = document.createElement('table');
+
+    if (container.firstChild) {
+        container.removeChild(container.firstChild);
+    }
+
+    var header = document.createElement('tr');
+    header.appendChild(document.createElement('td'));
+    for (var x = 0; x < 5; x++) {
+        header.appendChild(document.createElement('td'));
+        header.cells[x+1].appendChild(document.createTextNode('Node ' + (x+1).toString()));
+        header.cells[x+1].style.fontWeight = 900;
+        header.cells[x+1].style.width = '75px';
+    }
+    table.appendChild(header);
+
+    for (var y = 0; y < 5; y++) {
+        var tr = document.createElement('tr');
+
+        tr.appendChild(document.createElement('td'));
+        tr.cells[0].appendChild(document.createTextNode((y+1).toString() + '.'));
+        tr.cells[0].style.fontWeight = 900;
+        for (var x = 0; x < 5; x++) {
+            tr.appendChild(document.createElement('td'));
+            tr.cells[x+1].appendChild(document.createTextNode(data[x][y].toFixed(4)));
+            if (order[y] == x+1) {
+                tr.cells[x+1].style.color = color;
+            }
+        }
+
+        table.appendChild(tr);
+    }
+
+    container.appendChild(table);
+}
 
 function draw() {
 
@@ -191,7 +225,6 @@ function handleMouseMove(e) {
     startY = mouseY;
     dragTarget.x += dx;
     dragTarget.y += dy;
-    //draw();
     calculate();
 }
 
@@ -224,10 +257,15 @@ function calculate() {
         url: "http://localhost:5000/tsp/",
         data: JSON.stringify(graph),
         success: function (data) {
-            //console.log(data);
             graph_net_order = JSON.parse(JSON.stringify(data.net_order));
             graph_expected_order = JSON.parse(JSON.stringify(data.expected_order));
+            createTableForData(document.getElementById('networkResultContainer'), data.net, graph_net_order, 'red');
+            createTableForData(document.getElementById('expectedResultContainer'), data.expected, graph_expected_order, 'blue');
             draw();
         }
     });
 }
+
+draw();
+createTableForData(document.getElementById('networkResultContainer'), empty, graph_net_order, 'red');
+createTableForData(document.getElementById('expectedResultContainer'), empty, graph_expected_order, 'blue');
