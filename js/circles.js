@@ -225,7 +225,7 @@ function handleMouseMove(e) {
     startY = mouseY;
     dragTarget.x += dx;
     dragTarget.y += dy;
-    draw();
+    calculate();
     createTableForData(document.getElementById('networkResultContainer'), empty, graph_net_order, 'red');
     createTableForData(document.getElementById('expectedResultContainer'), empty, graph_expected_order, 'blue');
 }
@@ -268,6 +268,6 @@ function calculate() {
     });
 }
 
-draw();
+calculate();
 createTableForData(document.getElementById('networkResultContainer'), empty, graph_net_order, 'red');
 createTableForData(document.getElementById('expectedResultContainer'), empty, graph_expected_order, 'blue');
