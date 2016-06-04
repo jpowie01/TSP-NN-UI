@@ -16,3 +16,6 @@ Run API and open `index.html` in your browser.
 ## Other project repositories
 - [TSP NN API](https://github.com/jpowie01/TSP-NN-API)
 - [TSP NN Training](https://github.com/jpowie01/TSP-NN-Training)
+
+## Screenshot
+![Screenshot](/docs/assets/screenshot.png?raw=true "Screenshot")
