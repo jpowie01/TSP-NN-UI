@@ -30,7 +30,7 @@ footer {
 }
 
 #bodyContainer {
-	width: 840px;
+	width: 920px;
 	margin: 0 auto;
 }
 
@@ -62,9 +62,13 @@ footer {
 }
 
 #informationContainer {
-	width: 320px;
+	width: 400px;
 	float: right;
 	display: block;
+}
+
+#errorResultContainer {
+	text-align: center;
 }
 
 table {
