@@ -12,12 +12,13 @@ var dragTarget;
 
 var graph_net_order = [];
 var graph_expected_order = [];
-var empty = [[0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0]];
+var graph_error = 0;
+var empty = [[0,0,0,0,0,0], [0,0,0,0,0,0], [0,0,0,0,0,0], [0,0,0,0,0,0], [0,0,0,0,0,0], [0,0,0,0,0,0]];
 
 var circles = [
     {
-        "x": 118,
-        "y": 196,
+        "x": 90,
+        "y": 225,
         "r": 10,
         "id": 1,
         "color": {
@@ -26,8 +27,8 @@ var circles = [
             "b": 51
         }
     }, {
-        "x": 247,
-        "y": 105,
+        "x": 330,
+        "y": 90,
         "r": 10,
         "id": 2,
         "color": {
@@ -36,8 +37,8 @@ var circles = [
             "b": 51
         }
     }, {
-        "x": 382,
-        "y": 200,
+        "x": 420,
+        "y": 225,
         "r": 10,
         "id": 3,
         "color": {
@@ -46,8 +47,8 @@ var circles = [
             "b": 255
         }
     }, {
-        "x": 324,
-        "y": 352,
+        "x": 330,
+        "y": 370,
         "r": 10,
         "id": 4,
         "color": {
@@ -56,14 +57,24 @@ var circles = [
             "b": 51
         }
     }, {
-        "x": 174,
-        "y": 351,
+        "x": 170,
+        "y": 370,
         "r": 10,
         "id": 5,
         "color": {
             "r": 153,
             "g": 255,
             "b": 51
+        }
+    }, {
+        "x": 180,
+        "y": 90,
+        "r": 10,
+        "id": 6,
+        "color": {
+            "r": 219,
+            "g": 172,
+            "b": 235
         }
     }
 ];
@@ -77,7 +88,7 @@ function createTableForData(container, data, order, color) {
 
     var header = document.createElement('tr');
     header.appendChild(document.createElement('td'));
-    for (var x = 0; x < 5; x++) {
+    for (var x = 0; x < 6; x++) {
         header.appendChild(document.createElement('td'));
         header.cells[x+1].appendChild(document.createTextNode('Node ' + (x+1).toString()));
         header.cells[x+1].style.fontWeight = 900;
@@ -85,13 +96,13 @@ function createTableForData(container, data, order, color) {
     }
     table.appendChild(header);
 
-    for (var y = 0; y < 5; y++) {
+    for (var y = 0; y < 6; y++) {
         var tr = document.createElement('tr');
 
         tr.appendChild(document.createElement('td'));
         tr.cells[0].appendChild(document.createTextNode((y+1).toString() + '.'));
         tr.cells[0].style.fontWeight = 900;
-        for (var x = 0; x < 5; x++) {
+        for (var x = 0; x < 6; x++) {
             tr.appendChild(document.createElement('td'));
             tr.cells[x+1].appendChild(document.createTextNode(data[x][y].toFixed(4)));
             if (order[y] == x+1) {
@@ -132,7 +143,7 @@ function draw() {
 			ctx.stroke();
         }
         var a = graph_expected_order[0] - 1;
-        var b = graph_expected_order[4] - 1;
+        var b = graph_expected_order[5] - 1;
         ctx.beginPath();
         ctx.moveTo(circles[a].x, circles[a].y);
         ctx.lineTo(circles[b].x, circles[b].y);
@@ -157,7 +168,7 @@ function draw() {
             ctx.stroke();
         }
         var a = graph_net_order[0] - 1;
-        var b = graph_net_order[4] - 1;
+        var b = graph_net_order[5] - 1;
         ctx.beginPath();
         ctx.moveTo(circles[a].x, circles[a].y);
         ctx.lineTo(circles[b].x, circles[b].y);
@@ -261,8 +272,14 @@ function calculate() {
         success: function (data) {
             graph_net_order = JSON.parse(JSON.stringify(data.net_order));
             graph_expected_order = JSON.parse(JSON.stringify(data.expected_order));
+            console.log(data.net_error);
+            graph_error = JSON.parse(JSON.stringify(data.net_error));
             createTableForData(document.getElementById('networkResultContainer'), data.net, graph_net_order, 'red');
             createTableForData(document.getElementById('expectedResultContainer'), data.expected, graph_expected_order, 'blue');
+            if (document.getElementById('errorResult').firstChild) {
+                document.getElementById('errorResult').removeChild(document.getElementById('errorResult').firstChild);
+            }
+            document.getElementById('errorResult').appendChild(document.createTextNode(graph_error.toFixed(4)+'%'));
             draw();
         }
     });
