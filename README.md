@@ -19,3 +19,7 @@ Run API and open `index.html` in your browser.
 
 ## Screenshot
 ![Screenshot](/docs/assets/screenshot.png?raw=true "Screenshot")
+
+## Authors
+- [Jakub Powierza](https://github.com/jpowie01)
+- [Karolina Olszewska](https://github.com/kolszewska)
